@@ -55,7 +55,7 @@
   tasks:
     - include: roles/neutron-metadata-agent/tasks/status.yml
 
-- hosts: NEU-L3A
+- hosts: NEU-L3A:NEU-VPNA
   max_fail_percentage: 0
   roles:
     - neutron-l3-agent
@@ -78,14 +78,6 @@
 
   tasks:
     - include: roles/neutron-lbaas-agent/tasks/status.yml
-
-- hosts: NEU-VPNA
-  max_fail_percentage: 0
-  roles:
-    - neutron-vpn-agent
-
-  tasks:
-    - include: roles/neutron-vpn-agent/tasks/status.yml
 
 - hosts: NEU-L2GWA
   max_fail_percentage: 0

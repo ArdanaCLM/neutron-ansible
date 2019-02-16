@@ -20,7 +20,6 @@
   neutron_service_cmd: "neutron-l3-agent"
   neutron_service_cmd_args:
     "--config-file={{ neutron_conf_dir }}/l3_agent.ini
-    --config-file={{ neutron_conf_dir }}/fwaas_driver.ini
     --config-file={{ neutron_conf_dir }}/neutron.conf
     --log-file={{ neutron_log_dir }}/neutron-l3-agent.log"
 

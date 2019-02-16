@@ -131,9 +131,8 @@
 
 - include: _configure_metadata_agent.yml
 
+  # vpnaas and fwaas configured as l3 agent services
 - include: _configure_l3_agent.yml
-
-- include: _configure_vpn_agent.yml
 
 - include: _configure_lbaas_agent.yml
 
