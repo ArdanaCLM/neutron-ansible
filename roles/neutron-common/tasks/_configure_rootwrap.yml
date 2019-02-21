@@ -85,7 +85,7 @@
     mode: "0644"
   with_items:
     - lbaas-haproxy.filters
-  register: ardana_notify_lbaasv2_agent_restart_required
+  register: ardana_notify_neutron_lbaasv2_agent_restart_required
 
 - name: neutron-common | _configure_rootwrap | Customize neutron-vpnaas rootwrap filters
   become: yes
@@ -97,7 +97,7 @@
     mode: "0644"
   with_items:
     - vpnaas.filters
-  register: ardana_notify_vpn_agent_restart_required
+  register: ardana_notify_neutron_vpn_agent_restart_required
 
 # Customize rootwrap.conf
 - include: _write_conf.yml
