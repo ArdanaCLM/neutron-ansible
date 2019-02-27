@@ -42,11 +42,6 @@
   register: ardana_notify_neutron_l3_agent_restart_required
   when: write_conf_result.changed==true
 
-- name: neutron-common | _configure_l3_agent | Notify vpn_agent of l3_agent.ini change
-  command: /bin/true
-  register: ardana_notify_neutron_vpn_agent_restart_required
-  when: write_conf_result.changed==true
-
 - include: _write_conf.yml
   src: "l3-agent-logging.conf.j2"
   dest: "l3-agent-logging.conf"
@@ -54,18 +49,4 @@
 - name: neutron-common | _configure_l3_agent | l3-agent-logging.conf change
   command: /bin/true
   register: ardana_notify_neutron_l3_agent_restart_required
-  when: write_conf_result.changed==true
-
-- include: _write_conf.yml
-  src: "fwaas_driver.ini.j2"
-  dest: "fwaas_driver.ini"
-
-- name: neutron-common | _configure_l3_agent | Notify l3_agent of fwaas_driver.ini change
-  command: /bin/true
-  register: ardana_notify_neutron_l3_agent_restart_required
-  when: write_conf_result.changed==true
-
-- name: neutron-common | _configure_l3_agent | Notify vpn_agent of fwaas_driver.ini change
-  command: /bin/true
-  register: ardana_notify_neutron_vpn_agent_restart_required
   when: write_conf_result.changed==true

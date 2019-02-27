@@ -56,8 +56,6 @@
       "{{ neutron_conf_dir }}/metadata-agent-logging.conf"
     neutron_lbaas_agent_logging_config_file:
       "{{ neutron_conf_dir }}/lbaas-agent-logging.conf"
-    neutron_vpn_agent_logging_config_file:
-      "{{ neutron_conf_dir }}/vpn-agent-logging.conf"
     neutron_ovsvapp_agent_logging_config_file:
       "{{ neutron_conf_dir }}/ovsvapp-agent-logging.conf"
     neutron_policy_file: "{{ neutron_conf_dir }}/policy.json"

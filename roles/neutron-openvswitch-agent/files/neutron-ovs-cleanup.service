@@ -21,7 +21,6 @@ After=openvswitch-switch.service
 Before=neutron-openvswitch-agent.service
 Before=neutron-l3-agent.service
 Before=neutron-dhcp-agent.service
-Before=neutron-vpn-agent.service
 
 [Service]
 Type=oneshot

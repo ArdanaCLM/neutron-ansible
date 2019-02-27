@@ -178,6 +178,11 @@ endpoint_type = internal
 {% endfor %}
 
 
+{% if 'fwaas' in neutron_service_plugins %}
+{% include 'fwaas_plugin.j2' %}
+{% endif %}
+
+
 # Add additional options here
 
 

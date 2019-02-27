@@ -63,21 +63,13 @@
   tasks:
     - include: roles/neutron-metadata-agent/tasks/start.yml
 
-- hosts: NEU-L3A
+- hosts: NEU-L3A:NEU-VPNA
   roles:
     - neutron-common
     - neutron-l3-agent
 
   tasks:
     - include: roles/neutron-l3-agent/tasks/start.yml
-
-- hosts: NEU-VPNA
-  roles:
-    - neutron-common
-    - neutron-vpn-agent
-
-  tasks:
-    - include: roles/neutron-vpn-agent/tasks/start.yml
 
 - hosts: NEU-LBAV2
   roles:

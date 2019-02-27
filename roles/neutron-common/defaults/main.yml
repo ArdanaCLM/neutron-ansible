@@ -512,3 +512,11 @@ dns_domain: "{{ config_data | item('DES.dns_domain', default='openstacklocal') }
 ovs_ssh_poll_delay: 2
 ovs_ssh_timeout: 60
 ovs_ssh_connect_timeout: 5
+
+#[fwaas]
+firewall_service_plugin: "{%- set splist = NEU_SVR | get_provided_data_values('service_plugins' )  -%}
+                           {%- for sp in (splist | unique) -%}
+                               {%- if 'neutron_fwaas' in sp -%}
+                                   {{ sp }}
+                               {%- endif -%}
+                           {%- endfor -%}"
