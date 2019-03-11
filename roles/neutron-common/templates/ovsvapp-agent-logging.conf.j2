@@ -42,6 +42,7 @@ level: INFO
 class: handlers.WatchedFileHandler
 args: ('{{ neutron_log_dir }}/ovsvapp-agent/ovsvapp_agent.log',)
 formatter: context
+level: INFO
 
 # Writes JSON to disk, beaver will ship to logstash
 [handler_logstash]

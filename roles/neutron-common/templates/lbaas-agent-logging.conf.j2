@@ -42,6 +42,7 @@ level: NOTSET
 class: handlers.WatchedFileHandler
 args: ('/var/log/neutron/neutron-lbaas-agent.log',)
 formatter: context
+level: INFO
 
 # Writes JSON to disk, beaver will ship to logstash
 [handler_logstash]
