@@ -51,6 +51,19 @@
   register: ardana_notify_neutron_l3_agent_restart_required
   when: write_conf_result.changed==true
 
+# Customize rootwrap vpnaas.filters
+- include: _write_conf.yml
+  write_conf_file_owner: "root"
+  write_conf_file_group: "root"
+  src: "../templates/vpnaas.filters.j2"
+  dest: "rootwrap.d/vpnaas.filters"
+  mode: "0644"
+
+- name: neutron-common | _configure_rootwrap | Notify l3_agent vpnaas.filters changed
+  command: /bin/true
+  register: ardana_notify_neutron_l3_agent_restart_required
+  when: write_conf_result.changed==true
+
 - name: neutron-common | _configure_rootwrap | Customize neutron rootwrap filters
   become: yes
   template:
@@ -69,7 +82,6 @@
     - netns-cleanup.filters
     - openvswitch-plugin.filters
     - privsep.filters
-    - vpnaas.filters
 
 - name: neutron-common | _configure_rootwrap | Customize neutron-lbaas rootwrap filters
   become: yes

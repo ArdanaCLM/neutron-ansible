@@ -27,3 +27,4 @@ required_packages:
   - iptables
   - keepalived
   - conntrack-tools
+  - strongswan

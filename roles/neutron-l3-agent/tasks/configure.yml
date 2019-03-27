@@ -34,3 +34,22 @@
   with_items:
     - neutron-l3-agent-json.log
     - neutron-l3-agent.log
+
+# NOTE: The vpnaas service relies on neutron-vpn-netns-wrapper which by default
+# looks for the rootwrap.conf settings in /etc/neutron/rootwrap.conf, so we need
+# to create a symlink under /etc/neutron pointing to the version that we are
+# using for the l3 agent. We can remove this symlink once we figure out how to
+# pass the --rootwrap_config={{ neutron_conf_dir }}/rootwrap.conf to the
+# neutron-vpn-netns-wrapper when it is invoked.
+- name: neutron-l3-agent | configure | Create directory for conf symbolic links
+  become: yes
+  file:
+    path: "{{ neutron_conf_symlink_dir }}"
+    state: directory
+
+- name: neutron-l3-agent | configure | Create symbolic link to conf files
+  become: yes
+  file:
+    src: "{{ neutron_conf_dir }}/rootwrap.conf"
+    dest: "{{ neutron_conf_symlink_dir }}/rootwrap.conf"
+    state: link
