@@ -80,6 +80,9 @@ driver = messaging
 # Uncomment the lines below if the Infoblox IPAM driver is to be used
 # driver = messagingv2
 
+[oslo_middleware]
+enable_proxy_headers_parsing = true
+
 [oslo_policy]
 policy_file = {{ neutron_policy_file }}
 
