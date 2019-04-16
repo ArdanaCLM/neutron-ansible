@@ -45,16 +45,14 @@
   include_vars: pci.yml
   when: network_device_types is defined
 
-- name: neutron-common | configure | copy sudoers
+- name: neutron-common | configure | configure neutron-sudoers
   become: yes
-  copy: src=sudoers dest=/etc/sudoers.d/neutron owner=root group=root mode=0440
-
-- name: neutron-common | configure | configure sudoers
-  become: yes
-  lineinfile:
-    dest: /etc/sudoers.d/neutron
-    line:  "Defaults:neutron secure_path=\"{{ neutron_bin_dir }}\
-            :/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\""
+  template:
+    src: "neutron-sudoers.j2"
+    dest: "/etc/sudoers.d/neutron"
+    owner: "root"
+    group: "root"
+    mode: 0440
 
 # Create the group "neutron" and user "neutron"
 - include: _create_user_and_group.yml
