@@ -129,8 +129,7 @@
 
 - include: _configure_metadata_agent.yml
 
-  # vpnaas and fwaas configured as l3 agent services
-- include: _configure_l3_agent.yml
+# l3-agent configuration handled by the neutron-l3-agent role
 
 - include: _configure_lbaas_agent.yml
 
