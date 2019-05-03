@@ -16,6 +16,18 @@
 #
 ---
 
+- name: neutron-lbaasv2-agent | configure | Customize rootwrap filters
+  become: yes
+  template:
+    src: "../../neutron-common/templates/{{ item }}.j2"
+    dest: "{{ neutron_rootwrap_filters_dir }}/{{ item }}"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  with_items:
+    - lbaas-haproxy.filters
+  register: ardana_notify_neutron_lbaasv2_agent_restart_required
+
 - include: ../../neutron-common/tasks/create_systemd_service.yml
   neutron_service_cmd: "neutron-lbaasv2-agent"
   neutron_service_cmd_args:
