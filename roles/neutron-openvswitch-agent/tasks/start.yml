@@ -27,6 +27,15 @@
     name: neutron-ovs-cleanup
     enabled: yes
 
+- name: neutron-openvswitch-agent | start | Terminate any dhclient instances
+  become: yes
+  command: pkill dhclient
+  when: ((not (ardana_notify_neutron_restart_required is not defined)) and
+          ardana_notify_neutron_restart_required.changed) or
+        ((not (ardana_notify_neutron_ovs_agent_restart_required is not defined)) and
+          ardana_notify_neutron_ovs_agent_restart_required.changed)
+  failed_when: false
+
 - name: neutron-openvswitch-agent | start | Restart the neutron-openvswitch-agent
   become: yes
   service:
