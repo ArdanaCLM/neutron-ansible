@@ -403,9 +403,9 @@ l2gw_playbook_caller: ""
 ## [DEFAULT]
 
 neutron_max_workers: 10
-neutron_api_workers: "{{ [neutron_max_workers, [2, ansible_processor_vcpus / 2] | max] | min }}"
-neutron_rpc_workers: "{{ [neutron_max_workers, [1, ansible_processor_vcpus / 4] | max] | min }}"
-neutron_metadata_workers: "{{ [neutron_max_workers, [2, ansible_processor_vcpus / 2] | max] | min }}"
+neutron_api_workers: "{{ [neutron_max_workers, [2, ansible_processor_vcpus / 2] | max] | min | int }}"
+neutron_rpc_workers: "{{ [neutron_max_workers, [1, ansible_processor_vcpus / 4] | max] | min | int }}"
+neutron_metadata_workers: "{{ [neutron_max_workers, [2, ansible_processor_vcpus / 2] | max] | min | int }}"
 
 ### API
 neutron_bind_host: "{% if host.bind.NEU_SVR is defined %}{{ host.bind.NEU_SVR.internal.ip_address }}{% endif %}"
