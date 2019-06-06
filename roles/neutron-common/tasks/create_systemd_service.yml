@@ -20,9 +20,37 @@
   debug:
     msg:  "Setting up the systemd service for {{ neutron_service_cmd }}"
 
+# NOTE: This setting impacts the restart_limit_interval setting, in that
+# it changes the minimum time between restarts of a failed service and
+# thus can impact whether the specified burst limit number of restart
+# attempts could even happen within the specified interval.
 - name: neutron-common | create_systemd_service | setup restart hold time
   set_fact:
     restart_hold: "{{ service_restart_hold | default('5s') }}"
+
+# NOTE: The desired StartLimitInterval value really should be
+# derived from the restart_hold and restart_limit_burst
+# values, to ensure that our interval is slightly greater than the
+# burst limit * (restart hold + time for service to fail startup).
+# If a service overrides the default restart_hold setting, it should
+# also override the restart_limit_interval setting with an appropriate
+# value. The default value of 40 seconds here is based upon the desire
+# to limit restarts to 5 at most in that interval allowing for the fact
+# that there will be at least 5 seconds between restart attempts due to
+# the default restart_hold setting, and allowing for up to 3 seconds of
+# delay between starting the service and it failing.
+- name: neutron-common | create_systemd_service | setup restart limit interval
+  set_fact:
+    restart_limit_interval: "{{ service_restart_limit_interval | default('40s') }}"
+
+# NOTE: This setting impacts the restart_limit_interval setting, in that
+# it specifies how many restarts we allow within that interval, but the
+# time between restart attempts is impacted by the restart_hold setting,
+# so if this value is increased or decreased, the restart_limit_interval
+# should be adjusted appropriately.
+- name: neutron-common | create_systemd_service | setup restart limit burst
+  set_fact:
+    restart_limit_burst: "{{ service_restart_limit_burst | default('5') }}"
 
 - name: neutron-common | create_systemd_service | Construct command string
   set_fact:

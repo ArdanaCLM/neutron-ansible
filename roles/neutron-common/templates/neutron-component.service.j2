@@ -30,6 +30,8 @@ Group={{ neutron_group }}
 PermissionsStartOnly=true
 Restart=on-failure
 RestartSec={{ restart_hold }}
+StartLimitInterval={{ restart_limit_interval }}
+StartLimitBurst={{ restart_limit_burst }}
 
 [Install]
 WantedBy=multi-user.target
