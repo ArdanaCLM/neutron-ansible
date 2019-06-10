@@ -37,13 +37,21 @@
     - neutron-l3-agent-json.log
     - neutron-l3-agent.log
 
-- name: neutron-l3-agent | configure | Remove symbolic link to conf files if not needed
+# With https://review.opendev.org/#/c/656858/ merged to neutron-vpnaas
+# repo, the /etc/neutron/rootwrap.conf is no longer required. So delete
+# the /etc/neutron directory and /etc/neutron/rootwrap.conf symlink that
+# were created in previous versions of the neutron-ansible playbook.
+
+- name: neutron-l3-agent | configure | Delete unneeded symlink to conf files
   become: yes
   file:
-    src: "{{ neutron_conf_dir }}/rootwrap.conf"
-    dest: "{{ neutron_conf_symlink_dir }}/rootwrap.conf"
+    path: "{{ neutron_conf_symlink_dir }}/rootwrap.conf"
     state: absent
-  when: '"vpnaas" not in _l3_agent_extensions'
+
+- name: neutron-l3-agent | configure | Delete /etc/neutron dir (only if empty)
+  become: yes
+  command: rmdir {{ neutron_conf_symlink_dir }}
+  ignore_errors: true
 
 - include: _config_vpnaas.yml
   when: '"vpnaas" in _l3_agent_extensions'
