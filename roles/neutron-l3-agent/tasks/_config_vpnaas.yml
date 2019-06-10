@@ -1,0 +1,47 @@
+#
+# (c) Copyright 2019 SUSE LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+---
+
+- include: ../../neutron-common/tasks/_write_conf.yml
+  write_conf_file_owner: "root"
+  write_conf_file_group: "root"
+  src: "../../neutron-common/templates/vpnaas.filters.j2"
+  dest: "rootwrap.d/vpnaas.filters"
+  mode: "0644"
+
+- name: neutron-l3-agent | _config_vpnaas | Notify l3_agent vpnaas.filters changed
+  command: /bin/true
+  register: ardana_notify_neutron_l3_agent_restart_required
+  when: write_conf_result.changed==true
+
+# NOTE: The vpnaas service relies on neutron-vpn-netns-wrapper which by default
+# looks for the rootwrap.conf settings in /etc/neutron/rootwrap.conf, so we need
+# to create a symlink under /etc/neutron pointing to the version that we are
+# using for the l3 agent. We can remove this symlink once we figure out how to
+# pass the --rootwrap_config={{ neutron_conf_dir }}/rootwrap.conf to the
+# neutron-vpn-netns-wrapper when it is invoked.
+- name: neutron-l3-agent | _config_vpnaas | Create directory for conf symbolic links
+  become: yes
+  file:
+    path: "{{ neutron_conf_symlink_dir }}"
+    state: directory
+
+- name: neutron-l3-agent | _config_vpnaas | Create symbolic link to conf files
+  become: yes
+  file:
+    src: "{{ neutron_conf_dir }}/rootwrap.conf"
+    dest: "{{ neutron_conf_symlink_dir }}/rootwrap.conf"
+    state: link
