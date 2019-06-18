@@ -17,6 +17,8 @@
 ---
 
 - include: ../../neutron-common/tasks/create_systemd_service.yml
+  neutron_required_running_services:
+    - openvswitch
   neutron_service_cmd: "neutron-openvswitch-agent"
   neutron_service_cmd_args:
     "--config-file={{ neutron_conf_dir }}/neutron.conf
