@@ -20,6 +20,13 @@
 Description={{ neutron_service_cmd }} Service
 Requires={{ neutron_required_service }}
 Requires=network.service
+{% set other_services = neutron_required_running_services | default([]) -%}
+{% for other_service in other_services -%}
+      Requires={{ other_service }}.service
+{% endfor %}
+{% for other_service in other_services -%}
+      After={{ other_service }}.service
+{% endfor %}
 After=network.service
 
 [Service]
