@@ -520,3 +520,23 @@ firewall_service_plugin: "{%- set splist = NEU_SVR | get_provided_data_values('s
                                    {{ sp }}
                                {%- endif -%}
                            {%- endfor -%}"
+
+default_fwaas_srv_prov: 'FIREWALL:Iptables:neutron.agent.linux.iptables_firewall.OVSHybridIptablesFirewallDriver:default'
+neutron_fwaas_service_provider: "
+    {%- set fwsp_list = NEU_SVR | get_provided_data_values('fwaas_service_provider', default=[]) -%}
+    {%- do fwsp_list.append(default_fwaas_srv_prov) -%}
+    {{ fwsp_list | first }}"
+
+default_fwaas_driver: 'iptables'
+neutron_fwaas_driver: "
+    {%- set fwdvr_list = NEU_SVR | get_provided_data_values('fwaas_driver', default=[]) -%}
+    {%- do fwdvr_list.append(default_fwaas_driver) -%}
+    {{ fwdvr_list | first }}"
+
+
+#[vpnaas]
+default_vpnaas_srv_prov: 'VPN:strongswan:neutron_vpnaas.services.vpn.service_drivers.ipsec.IPsecVPNDriver:default'
+neutron_vpnaas_service_provider: "
+    {%- set vpnsp_list = NEU_SVR | get_provided_data_values('vpnaas_service_provider', default=[]) -%}
+    {%- do vpnsp_list.append(default_vpnaas_srv_prov) -%}
+    {{ vpnsp_list | first }}"

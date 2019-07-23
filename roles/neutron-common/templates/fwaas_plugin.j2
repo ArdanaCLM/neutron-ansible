@@ -22,5 +22,5 @@ agent_version = v1
 {% else %}
 agent_version = {{ version.split("_")[2] }}
 {% endif %}
-driver = iptables
+driver = {{ neutron_fwaas_driver }}
 enabled = True
