@@ -513,6 +513,13 @@ ovs_ssh_poll_delay: 2
 ovs_ssh_timeout: 60
 ovs_ssh_connect_timeout: 5
 
+# Table of strings that can be used to search for specific messages in
+# systemctl output. Useful to define here for readability as the
+# non-alphabetic characters, e.g. ':' or '(' and ')', can require ugly
+# string quoting when used in when conditions.
+neutron_systemctl_match:
+  not_found: "Loaded: not-found (Reason: No such file or directory)"
+
 #[fwaas]
 firewall_service_plugin: "{%- set splist = NEU_SVR | get_provided_data_values('service_plugins' )  -%}
                            {%- for sp in (splist | unique) -%}

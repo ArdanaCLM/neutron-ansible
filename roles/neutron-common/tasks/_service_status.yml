@@ -26,6 +26,10 @@
   ignore_errors: yes
   changed_when: false
   register: systemctl_status_result
+  failed_when:
+    - systemctl_status_result | failed
+    - ((neutron_systemctl_match.not_found not in systemctl_status_result.stdout) or
+       not(neutron_ignore_service_not_found | default(false)))
 
 - name: neutron-common | _service_status | Report status
   fail:
@@ -34,4 +38,7 @@
       systemctl status {{ neutron_component }} output:
       {{ systemctl_status_result.stdout }}
       {{ systemctl_status_result.stderr }}
-  when: systemctl_status_result | failed
+  when:
+    - systemctl_status_result | failed
+    - ((neutron_systemctl_match.not_found not in systemctl_status_result.stdout) or
+       not(neutron_ignore_service_not_found | default(false)))

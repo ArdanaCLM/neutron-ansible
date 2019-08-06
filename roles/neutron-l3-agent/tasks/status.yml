@@ -16,4 +16,21 @@
 #
 ---
 
+# This file will only exist in the "active" venv if we haven't upgraded
+# to SOC 9 yet, so we can use it to determine if we can safely ignore
+# the neutron-l3-agent not being running during the initial upgrade run.
+- name: neutron-l3-agent | status | check if vpn_agent.ini exists
+  become: yes
+  stat:
+    path: "{{ 'neutron' | config_dir() }}/vpn_agent.ini"
+  register: vpn_agent_init_stat_result
+
+# In SOC 9 the neutron-vpn-agent is replaced by neutron-l3-agent
+# but until we finish deploying neutron for SOC 9 checking for
+# neutron-l3-agent won't be running yet on NEU-VPNA nodes.
 - include: ../../neutron-common/tasks/_service_status.yml
+  vars:
+    neutron_ignore_service_not_found: >-
+      (vpn_agent_init_stat_result.stat is defined and
+       vpn_agent_init_stat_result.stat.exists) and
+      ('NEU-VPNA' in group_names)
