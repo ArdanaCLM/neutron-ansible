@@ -19,7 +19,7 @@
 - name: neutron-common | setup_monasca_service_plugin | Calculate monasca_agent_plugin arg string
   set_fact:
     monasca_agent_plugin_args:
-      "service_api_url=http://{{ neutron_bind_host }}:{{ neutron_bind_port }}"
+      "service_api_url=http://{{ neutron_bind_host | ipwrap }}:{{ neutron_bind_port }}"
   when: neutron_bind_host|length > 0
 
 - name: neutron-common | setup_monasca_service_plugin | Run Monasca agent Neutron detection plugin

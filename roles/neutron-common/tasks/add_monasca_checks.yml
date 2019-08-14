@@ -29,5 +29,5 @@
   monasca_agent_plugin:
     name: "httpcheck"
     args: "use_keystone=True match_pattern=.*v2.0.*
-            url=http://{{ neutron_bind_host }}:{{ neutron_bind_port }}/
+            url=http://{{ neutron_bind_host | ipwrap }}:{{ neutron_bind_port }}/
             dimensions=service:networking,component:neutron-server"
