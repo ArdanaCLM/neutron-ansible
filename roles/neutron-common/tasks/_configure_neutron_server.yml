@@ -60,6 +60,7 @@
 - include: _write_conf.yml
   src: "{{ neutron_server_std_policy_json_j2 }}"
   dest: "policy.json"
+  make_backup: False
 
 - include: _write_conf.yml
   src: "ml2_conf_sriov.ini.j2"
