@@ -29,6 +29,7 @@
 
 # Copy the third-party policy json files to <neutron_conf_dir>/policy.d
 - include: _write_conf_list.yml conf_files={{ neutron_server_policy_json }}
+  make_backup: False
 
 - name: neutron-common | _configure_policy_jsons |
     Notify neutron_server if third-party policy.json files changed.

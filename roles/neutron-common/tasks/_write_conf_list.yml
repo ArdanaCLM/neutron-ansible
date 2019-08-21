@@ -21,13 +21,17 @@
   register: conf_stat_result
   with_items: "{{ conf_files }}"
 
+- name: neutron-common | _write_conf_list | check whether to make backup
+  set_fact:
+    _make_backup: "{{ make_backup | default(true) }}"
+
 - name: neutron-common | _write_conf_list | get timestamp
   command: date +%Y%m%d%H%M%S
   register: time_result
 
 - name: neutron-common | _write_conf_list | Create backups of config files
   become: yes
-  command: cp {{ neutron_conf_dir }}/{{ item.dest }}
+  command: cp -p {{ neutron_conf_dir }}/{{ item.dest }}
            {{ neutron_conf_dir }}/{{ item.dest }}.{{ time_result.stdout }}
   when: "conf_stat_result.results[{{ conf_files.index(item) }}].stat.exists"
   with_items: "{{ conf_files }}"
@@ -49,7 +53,7 @@
   file:
     path: "{{ neutron_conf_dir }}/{{ item.dest }}.{{ time_result.stdout}}"
     state: absent
-  when: "write_conf_list_result.results[{{ conf_files.index(item) }}].changed == false"
+  when: "write_conf_list_result.results[{{ conf_files.index(item) }}].changed == false or _make_backup|bool == false"
   with_items: "{{ conf_files }}"
 
 - name: neutron-common | _write_conf_list |
