@@ -440,7 +440,7 @@ neutron_use_helper_for_ns_read: "False"
 ### [Octavia]
 octavia_api_uri: "{{ octavia_api.api_url }}"
 
-neutron_lbaas_providers: "{%- if verb_hosts.OCT_API is defined -%}
+default_lbaas_srv_provs: "{%- if verb_hosts.OCT_API is defined -%}
                                   {{ 'service_provider = LOADBALANCERV2:Octavia:neutron_lbaas.drivers.octavia.driver.OctaviaDriver:default' }}
                                   {%- if verb_hosts.NEU_LBAV2 is defined -%}
                                           {{'\n'}}{{ 'service_provider = LOADBALANCERV2:Haproxy:neutron_lbaas.drivers.haproxy.plugin_driver.HaproxyOnHostPluginDriver' }}
@@ -452,6 +452,14 @@ neutron_lbaas_providers: "{%- if verb_hosts.OCT_API is defined -%}
                           {%- elif verb_hosts.NEU_LBAV1 is defined -%}
                                   {{ 'service_provider = LOADBALANCER:Haproxy:neutron.services.loadbalancer.drivers.haproxy.plugin_driver.HaproxyOnHostPluginDriver:default' }}
                           {%- else -%}{{ '' }}{%- endif -%}"
+
+neutron_lbaas_providers: "
+    {%- set lbsp_list = NEU_SVR | get_provided_data_values('lbaas_service_provider', default=[]) -%}
+    {%- if lbsp_list | length -%}
+       service_provider = {{ lbsp_list | first }}
+    {%- else -%}
+       {{ default_lbaas_srv_provs }}
+    {%- endif -%}"
 
 neutron_lbaas_plugin: "{%- if verb_hosts.OCT_API is defined or verb_hosts.NEU_LBAV2 is defined -%}
                                   {{ 'neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPluginv2,' }}
