@@ -332,7 +332,7 @@ ml2_conf_ini_in_list: >
 neutron_api_extensions_path: >
     {%- set aep_list = NEU_SVR | get_provided_data_values('api_extensions_path') -%}
     {%- if aep_list|length > 0 -%}
-        api_extensions_path = {{ aep_list | unique | join(',') }}
+        api_extensions_path = {{ aep_list | unique | join(':') }}
     {%- endif -%}
 
 neutron_conf_snippets: >
