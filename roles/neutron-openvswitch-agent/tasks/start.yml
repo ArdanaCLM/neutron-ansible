@@ -17,8 +17,8 @@
 # Start or restart neutron ovs agent
 ---
 - name: neutron-openvswitch-agent | start | Check if network has restarted
-  set_fact:
-    ardana_notify_neutron_ovs_agent_restart_required: true
+  command: /bin/true
+  register: ardana_notify_neutron_ovs_agent_restart_required
   when: network_restarted is defined and network_restarted
 
 - name: neutron-openvswitch-agent | start | Enable neutron-ovs-cleanup.service
