@@ -48,3 +48,4 @@ symlinks:
   "neutron/ml2_conf_sriov_agent.ini.j2": "roles/neutron-common/templates/ml2_conf_sriov_agent.ini.j2"
   "neutron/sriov-agent-logging.conf.j2": "roles/neutron-common/templates/sriov-agent-logging.conf.j2"
   "neutron/monasca_ovs_configuration.yml": "roles/neutron-common/vars/monasca_ovs_configuration.yml"
+  "neutron/neutron-fwaas.json.j2": "roles/neutron-l3-agent/templates/policy.d/neutron-fwaas.json.j2"
